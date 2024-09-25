@@ -23,6 +23,16 @@ To install JobTrends, follow these steps:
 1. Clone the repository:   
 ```git clone https://github.com/Hamza-Bouzoubaa/JobTrends.git ```
 
+2. Create a virtual environment:
+``` python -m venv env  ```
+
+3. Activate the env:
+``` .\env\Scripts\activate  ```
+
+4. Install all libraries:
+``` pip install -r requirements.txt ```
+
+
   
 ## Using the Dashboard  
   
