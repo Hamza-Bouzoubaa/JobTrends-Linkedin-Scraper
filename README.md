@@ -1,6 +1,9 @@
-# LinkedIn Scraper and Dashboard using Streamlets and Python  
+# LinkedIn Scraper and Dashboard using Streamlit and Python  
   
 This project is part of a Microsoft event aimed at building a LinkedIn job posting scraper and a dashboard using Streamlets and Python.
+
+# Link to the event recording:
+[Video](https://stdntpartners-my.sharepoint.com/:v:/g/personal/hamza_bouzoubaa_studentambassadors_com/ES6w-S-wB1hBnEyJPOhdLTUBp0XG5NI2Z0A7hTfmX5yDJQ?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0NvcHkifX0&e=TQf273)
 
 ## What the Project Does  
   
