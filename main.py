@@ -36,12 +36,12 @@ def CreateCityComparaison(Job,CityList = CityList):
     df["Week_Jobs"] = [x[2] for x in TotalJobs]
     df["Month_Jobs"] = [x[1] for x in TotalJobs]
     df["Total_Jobs"] = [x[0] for x in TotalJobs]
+    df['Date'] = datetime.datetime.now().strftime('%Y-%m-%d')
 
-    df["Week"] = datetime.datetime.now().isocalendar()[1]
-    df["Month"] = datetime.datetime.now().month
-    df["Year"] = datetime.datetime.now().year
-
-    df.to_csv(f"JobData/{Job}/TotalJobs/{Job}_{datetime.datetime.now().isocalendar()[1]}_{datetime.datetime.now().month}_{datetime.datetime.now().year}_TotalJobs.csv",index=False)
+    dataframe = pd.read_csv(f'JobData/{Job}/TotalJobs/TotalJobs.csv')
+    df = pd.concat([dataframe,df])
+    df = df.sort_values(by='Date')
+    df.to_csv(f'JobData/{Job}/TotalJobs/TotalJobs.csv',index=False)
     return df    
 
 def GetCityData(Job,CityList = CityList):
@@ -58,6 +58,11 @@ def GetCityData(Job,CityList = CityList):
 
     
     
-## example usage
-CreateCityComparaison("Software engineer")
-GetCityData("Software engineer")
+# ## example usage
+# def main():
+#     JobtoSearch = "Software engineer"
+#     CreateCityComparaison(JobtoSearch)
+#     GetCityData(JobtoSearch)
+
+# if __name__ == "__main__":
+#     main()

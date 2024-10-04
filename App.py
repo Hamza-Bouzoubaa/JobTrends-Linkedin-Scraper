@@ -37,7 +37,6 @@ with col1:
 
     st.plotly_chart(fig)
 
-
   
 # Split your DataFrame into two  
 df1 = df.iloc[:3]  
@@ -57,6 +56,25 @@ with col3:
         st.metric(label=row['City'], value=row['Total_Jobs'])  
 
 selected_city = st.selectbox("Select a city", CityList)
+
+
+df = pd.read_csv("JobData/Software engineer/TotalJobs/TotalJobs.csv")
+df = df[df['City']==selected_city]
+df = df.sort_values(by='Date', ascending=False)
+st.subheader(f"Evolution of Total Jobs Over Time in {selected_city}")
+# Ensure the 'Date' column is in datetime format without hours
+df['Date'] = pd.to_datetime(df['Date']).dt.date
+df['Date'] = df['Date'].astype(str)  
+
+
+fig = px.line(df, x='Date', y='Total_Jobs', title=f'Total Jobs Over Time in {selected_city}')
+# Update x-axis to show only date without time  
+fig.update_xaxes(tickformat='%Y-%m-%d')  
+  
+# Plot the chart  
+st.plotly_chart(fig)
+
+
 
 
 col1, col2 = st.columns(2)

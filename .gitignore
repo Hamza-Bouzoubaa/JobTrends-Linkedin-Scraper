@@ -96,11 +96,12 @@ venv.bak/
   
 # mkdocs documentation  
 /site  
+*.mp4
+*.pem
   
 # mypy  
 .mypy_cache/  
 .mypy_cache/  
-  
 # Pyre type checker  
 .pyre/  
   
