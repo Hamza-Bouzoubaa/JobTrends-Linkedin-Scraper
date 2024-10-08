@@ -35,7 +35,6 @@ selected_report = st.sidebar.selectbox("", report_names, index=report_names.inde
 st.sidebar.markdown("---")
 
 st.sidebar.markdown("### Contact")
-st.sidebar.markdown("For any inquiries, please contact us at:")
 st.sidebar.markdown("**Email:** [hamza.bouzoubaa@hotmail.com](mailto:hamza.bouzoubaa@hotmail.com)")
 
 
