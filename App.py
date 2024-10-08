@@ -1,6 +1,8 @@
 import streamlit as st
 import plotly.express as px  
 import pandas as pd
+from DashboardFunctions import find_number_jobs_per_city,find_latest_jobs_cities
+import plotly.graph_objects as go
 
 
 # Set page configuration
@@ -9,70 +11,112 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded")
 
-CityList = [
 
+CityList = [
     "Ottawa",
     "Toronto",
     "Montreal",
     "Vancouver",
     "Calgary",
     "Edmonton"
-
 ]
+selected_city = st.sidebar.selectbox("Select a city", CityList)
+# Add a sidebar list with report names
+report_names = [
+    "Software Engineer",
+    "Internship",
+]
+
+st.sidebar.markdown("---")
+st.sidebar.markdown("### Available Reports")
+selected_report = st.sidebar.selectbox("", report_names)
+
 
 
 st.markdown("<h1 style='text-align: center;'><em>Linkedin Job</em>  <span style='color: blue;'><em>Trends</em></span></h1>", unsafe_allow_html=True)
-st.markdown("<h2 style='text-align: center;'>Query: Software Engineer</h2>", unsafe_allow_html=True)
+st.markdown(f"<h2 style='text-align: center;'>Query: {selected_report}</h2>", unsafe_allow_html=True)
 
 
 
 
-col1,col2,col3 = st.columns([3,0.5,0.5])
+
+col1,col2 = st.columns([3,0.9])
+
+
 
 
 with col1:
-    df = pd.read_csv("JobData/Software engineer/TotalJobs/Software engineer_39_9_2024_TotalJobs.csv")
-    st.subheader("Job Distribution by City")
-    fig = px.bar(df, x='City', y='Total_Jobs', title='Total Jobs in Different Cities in 38th week of September 2024', color='City')  
+    col11,col12 = st.columns([1,2])
+    with col11:
+        JobDate = st.selectbox('Posting date', options=['Last 24h', 'Last Week', 'Last Month', 'Total'])
+    df = find_number_jobs_per_city(JobSearch=selected_report, city=selected_city, JobDate=JobDate)
+    fig = px.line(df, x='Date',
+                    y='Total_Jobs',
+                    title=f'Jobs Over Time in {selected_city} ({JobDate})',
+                    labels={'Date':'Date', 'Total_Jobs':'Total Jobs'},
+                    line_shape='spline',
+                    hover_data={'Date': '|%B %d, %Y'})
+    fig.update_traces(
+        hovertemplate='<b>Date: %{x}</b><br><b>Total Jobs: %{y}</b><extra></extra>',
+        textfont_size=20  # Increase the font size
+    )
+    
+    fig.update_xaxes(tickformat='%Y-%m-%d')
+    fig.update_layout(  
+        height=500,  
+        title_x=0.5, # centers the title  
+      
+        font=dict( # changes the font  
+            size=25,  
+        )  
+    )  
+    
+    fig.update_traces(  
+        mode = 'lines+markers', # adds markers to the line plot,
+        
+        line=dict(width=3) , # increases the line width  
+        marker=dict()
+    )  
+    
+    fig.update_xaxes(  
+        tickangle=-25,  # rotates the x-axis labels for better visibility  
+        title_standoff=25 # provides more space between the axis title and the tick labels  
+    ) 
+
 
     st.plotly_chart(fig)
 
-  
+df = find_latest_jobs_cities(JobSearch=selected_report,JobDate=JobDate)
 # Split your DataFrame into two  
-df1 = df.iloc[:3]  
-df2 = df.iloc[3:]  
-  
-# Iterate over first half of DataFrame and write to first column  
+df1 = df.iloc[:2]  
+df2 = df.iloc[2:4]  
+df3 = df.iloc[4:6]
 with col2:
     st.markdown('#')
-    for index, row in df1.iterrows():  
-        st.metric(label=row['City'], value=row['Total_Jobs'])  
-    
 
-# Iterate over second half of DataFrame and write to second column 
-with col3: 
-    st.markdown('#')
-    for index, row in df2.iterrows():  
-        st.metric(label=row['City'], value=row['Total_Jobs'])  
+    col21,col22,col23,col24 = st.columns([0.5,1,1,1])
+    # Iterate over first half of DataFrame and write to first column  
+    with col22:
+        st.markdown('#')
+        for index, row in df1.iterrows():  
+            st.metric(label=row['City'], value=row['Total_Jobs'], delta=row['delta'])   
+        
 
-selected_city = st.selectbox("Select a city", CityList)
+    # Iterate over second half of DataFrame and write to second column 
+    with col23: 
+        st.markdown('#')
+        for index, row in df2.iterrows():  
+            st.metric(label=row['City'], value=row['Total_Jobs'], delta=row['delta'])   
+
+    with col24 :
+        st.markdown('#')
+        for index, row in df3.iterrows():  
+            st.metric(label=row['City'], value=row['Total_Jobs'], delta=row['delta'])   
 
 
-df = pd.read_csv("JobData/Software engineer/TotalJobs/TotalJobs.csv")
-df = df[df['City']==selected_city]
-df = df.sort_values(by='Date', ascending=False)
-st.subheader(f"Evolution of Total Jobs Over Time in {selected_city}")
-# Ensure the 'Date' column is in datetime format without hours
-df['Date'] = pd.to_datetime(df['Date']).dt.date
-df['Date'] = df['Date'].astype(str)  
 
 
-fig = px.line(df, x='Date', y='Total_Jobs', title=f'Total Jobs Over Time in {selected_city}')
-# Update x-axis to show only date without time  
-fig.update_xaxes(tickformat='%Y-%m-%d')  
-  
-# Plot the chart  
-st.plotly_chart(fig)
+
 
 
 
@@ -85,7 +129,7 @@ col1, col2 = st.columns(2)
 
 with col1:
     st.subheader(f" Required Seniority Level in {selected_city}")
-    df = pd.read_csv(f'JobData/Software engineer/Software Engineer in {selected_city}.csv')
+    df = pd.read_csv(f'JobData/{selected_report}/{selected_report} in {selected_city}.csv')
     SeniorityLevel = df['seniority_level'].value_counts()
     color_discrete_map = {
         'Entry level': 'blue',

@@ -7,7 +7,7 @@ from JobPosting import JobPosting
 import os
 
 
-def handle_response(response,MaxTrials=5,CurrentTrial=0):
+def handle_response(response,MaxTrials=10,CurrentTrial=0):
     
         status = response.status_code
 
@@ -29,7 +29,7 @@ def handle_response(response,MaxTrials=5,CurrentTrial=0):
     
         return response
 
-def make_request(JobTitle,Location,Position=0,MaxTrials=5,CurrentTrial=0):
+def make_request(JobTitle,Location,Position=0,MaxTrials=10,CurrentTrial=0):
 
     JobTitle = JobTitle.replace(" ","%20") # software engineer =  software%20engineer
 
@@ -69,7 +69,7 @@ def make_request(JobTitle,Location,Position=0,MaxTrials=5,CurrentTrial=0):
 
 
 
-def parse_jobs(response,CurrentTrial=0,MaxTrials=5):
+def parse_jobs(response,CurrentTrial=0,MaxTrials=10):
     Job_df = pd.DataFrame()
     soup = BeautifulSoup(response.text, 'html.parser') 
     

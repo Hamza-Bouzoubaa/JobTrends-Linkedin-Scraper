@@ -19,7 +19,7 @@ def CreateCityComparaison(Job,CityList = CityList):
     job_data_dir = f"JobData/{Job}/TotalJobs"
     os.makedirs(job_data_dir, exist_ok=True)
 
-    df = pd.DataFrame()
+    df = pd.DataFrame(columns=['City','24h_Jobs','Week_Jobs','Month_Jobs','Total_Jobs','Date'])
     TotalJobs = []
     
     for city in CityList:
@@ -37,9 +37,12 @@ def CreateCityComparaison(Job,CityList = CityList):
     df["Month_Jobs"] = [x[1] for x in TotalJobs]
     df["Total_Jobs"] = [x[0] for x in TotalJobs]
     df['Date'] = datetime.datetime.now().strftime('%Y-%m-%d')
-
-    dataframe = pd.read_csv(f'JobData/{Job}/TotalJobs/TotalJobs.csv')
-    df = pd.concat([dataframe,df])
+    try:
+        dataframe = pd.read_csv(f'JobData/{Job}/TotalJobs/TotalJobs.csv')
+        df = pd.concat([dataframe,df])
+    except:
+        pass
+    
     df = df.sort_values(by='Date')
     df.to_csv(f'JobData/{Job}/TotalJobs/TotalJobs.csv',index=False)
     return df    
