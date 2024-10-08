@@ -27,9 +27,16 @@ selected_city = st.sidebar.selectbox("Select a city", CityList)
 report_path = 'JobData/'
 report_names = [folder for folder in os.listdir(report_path) if os.path.isdir(os.path.join(report_path, folder))]
 
+
+
 st.sidebar.markdown("---")
 st.sidebar.markdown("### Available Reports")
-selected_report = st.sidebar.selectbox("", report_names)
+selected_report = st.sidebar.selectbox("", report_names, index=report_names.index("Software engineer") if "Software engineer" in report_names else 0)
+st.sidebar.markdown("---")
+
+st.sidebar.markdown("### Contact")
+st.sidebar.markdown("For any inquiries, please contact us at:")
+st.sidebar.markdown("**Email:** [hamza.bouzoubaa@hotmail.com](mailto:hamza.bouzoubaa@hotmail.com)")
 
 
 
@@ -48,7 +55,7 @@ col1,col2 = st.columns([3,0.9])
 with col1:
     col11,col12 = st.columns([1,2])
     with col11:
-        JobDate = st.selectbox('Posting date', options=['Last 24h', 'Last Week', 'Last Month', 'Total'])
+        JobDate = st.selectbox('Posting date', options=['Last 24h', 'Last Week', 'Last Month', 'Total'], index=3)
     df = find_number_jobs_per_city(JobSearch=selected_report, city=selected_city, JobDate=JobDate)
     fig = px.line(df, x='Date',
                     y='Total_Jobs',
