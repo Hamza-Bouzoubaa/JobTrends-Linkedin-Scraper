@@ -2,6 +2,7 @@ import streamlit as st
 import plotly.express as px  
 import pandas as pd
 from DashboardFunctions import find_number_jobs_per_city,find_latest_jobs_cities
+import os
 import plotly.graph_objects as go
 
 
@@ -22,10 +23,9 @@ CityList = [
 ]
 selected_city = st.sidebar.selectbox("Select a city", CityList)
 # Add a sidebar list with report names
-report_names = [
-    "Software Engineer",
-    "Internship",
-]
+# Get report names from folders available in JobData/
+report_path = 'JobData/'
+report_names = [folder for folder in os.listdir(report_path) if os.path.isdir(os.path.join(report_path, folder))]
 
 st.sidebar.markdown("---")
 st.sidebar.markdown("### Available Reports")
