@@ -31,7 +31,7 @@ report_names = [folder for folder in os.listdir(report_path) if os.path.isdir(os
 
 st.sidebar.markdown("---")
 st.sidebar.markdown("### Available Reports")
-selected_report = st.sidebar.selectbox("", report_names, index=report_names.index("Software engineer") if "Software engineer" in report_names else 0)
+selected_report = st.sidebar.selectbox("", report_names, index=report_names.index("Software Engineer") if "Software Engineer" in report_names else 0)
 st.sidebar.markdown("---")
 
 st.sidebar.markdown("### Contact")
