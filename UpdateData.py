@@ -2,7 +2,7 @@ import pandas as pd
 from LinkedinScraper import ScrapeAllJobs,ScrapeAllJobsDetails,ScrapeAllCompanies
 from main import CreateCityComparaison,GetCityData
 
-JobWatchList = ['Software engineer' , 'Internship']
+JobWatchList = ['Software Engineer' , 'Internship']
 
 def update_total_jobs():
     for Job in JobWatchList:
